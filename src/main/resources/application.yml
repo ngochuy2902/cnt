@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/cnt?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password: r00t
+  liquibase:
+    change-log: classpath:liquibase/master.xml
+application:
+  jwt:
+    secret-key: MTRmNDIzZTNlMDhmYzM3YTI5MjNjYjJkM2FlODFmZDc0MjYyMzVlYWY1M2RhYjhmNzUzNDYwNDFlNTkwM2VjOTZkMzhlN2NmOWU0NTk4YTU5ZWRkZmVkZjA0M2I4MDc1NmJiZTNlYmJlODVlYTBhNTYxMjk1YzA4OGIwMTQwYTE=
+    expiration: 8640000
+  cors:
+    allowed-origin: 'http://localhost:3000'
+server:
+  port: 8080

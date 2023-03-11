@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <property name="now" value="now(3)"/>
+
+    <changeSet id="00000000000000-1" author="ctn">
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(3)" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp(3)"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="users" columnNames="username" constraintName="unq_users_user_name"/>
+    </changeSet>
+
+    <changeSet id="00000000000000-2" author="cnt">
+        <createTable tableName="roles">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="00000000000000-3" author="cnt">
+        <createTable tableName="user_roles">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_roles_user_id" references="users(id)"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_roles_role_id" references="roles(id)"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="user_roles" indexName="idx_user_roles_user_id">
+            <column name="user_id" type="bigint"/>
+        </createIndex>
+        <createIndex tableName="user_roles" indexName="idx_user_roles_role_id">
+            <column name="role_id" type="bigint"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="00000000000000-4" author="cnt">
+        <createTable tableName="countries">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(3)" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp(3)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="00000000000000-5" author="cnt">
+        <createTable tableName="continents">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+                <column name="name" type="varchar(255)"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(3)" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp(3)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="00000000000000-6" author="cnt">
+        <createTable tableName="ethnicities">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(3)" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp(3)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="00000000000000-7" author="cnt">
+        <createTable tableName="country_continents">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_country_continents_country_id" references="countries(id)"/>
+            </column>
+            <column name="continent_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_country_continents_continent_id" references="continents(id)"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="country_continents" indexName="idx_country_continents_country_id">
+            <column name="country_id" type="bigint"/>
+        </createIndex>
+        <createIndex tableName="country_continents" indexName="idx_country_continents_continent_id">
+            <column name="continent_id" type="bigint"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="00000000000000-8" author="cnt">
+        <createTable tableName="user_countries">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_countries_user_id" references="users(id)"/>
+            </column>
+            <column name="country_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_countries_country_id" references="countries(id)"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="user_countries" indexName="idx_user_countries_user_id">
+            <column name="user_id" type="bigint"/>
+        </createIndex>
+        <createIndex tableName="user_countries" indexName="idx_user_countries_country_id">
+            <column name="country_id" type="bigint"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="00000000000000-9" author="cnt">
+        <createTable tableName="user_ethnicities">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_ethnicities_user_id" references="users(id)"/>
+            </column>
+            <column name="ethnicity_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_ethnicities_ethnicity_id" references="ethnicities(id)"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="user_ethnicities" indexName="idx_user_ethnicities_user_id">
+            <column name="user_id" type="bigint"/>
+        </createIndex>
+        <createIndex tableName="user_ethnicities" indexName="idx_user_ethnicities_ethnicity_id">
+            <column name="ethnicity_id" type="bigint"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="00000000000000-10" author="cnt">
+        <loadData
+                file="liquibase/data/roles.csv"
+                separator=";"
+                tableName="roles"/>
+    </changeSet>
+</databaseChangeLog>
